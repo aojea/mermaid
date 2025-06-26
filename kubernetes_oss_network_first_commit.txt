@@ -1,0 +1,20 @@
+timeline
+    title First commit for OSS Kubernetes Networking Projects
+    2013 : Calico<br>(pre kubernetes) 
+    2014 : Weave<br>(archived 2024)
+         : Flannel
+         : Openshift-SDN
+    2015 : CNI Specification v0.1.0
+         : Cilium
+    2016 : Kubenet
+         : Multus
+         : OVN-Kubernetes
+    2017 : CNI-Genie<br>(archived 2025)
+         : Contiv-VPP<br>(last commit 2020)
+         : Kube-router
+    2018 : Kube-ovn
+         : DANM<br>(last commit 2022)
+         : ovn4nfv-k8s-plugin<br>(archived 2022)
+    2019 : Antrea
+         : Kindnet
+

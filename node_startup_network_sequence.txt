@@ -1,0 +1,30 @@
+sequenceDiagram
+    title Kubernetes Node Startup (Network Initialization)
+    autonumber
+    participant APIServer as API Server
+    participant Kubelet
+    participant Runtime as Container Runtime
+    participant CNIPlugin as Network Plugin (DaemonSet)
+
+    Kubelet->>+APIServer: Register/Update Node object (NotReady)
+
+    loop Kubelet Readiness Check
+        Kubelet->>Runtime: Get NetworkReady status
+        Runtime->>Runtime: Check for CNI config file
+        alt CNI config file not found
+            Runtime-->>Kubelet: NetworkReady=false
+        else CNI config file found
+            Runtime-->>Kubelet: NetworkReady=true
+        end
+    end
+
+    rect rgb(230, 240, 255)
+        note over APIServer,CNIPlugin: Network Plugin Pod is scheduled on the new node
+        APIServer->>Kubelet: Schedule Network Pod
+        Kubelet->>+Runtime: Create Network Pod (HostNetwork=true)
+        Runtime-->>-Kubelet: Pod Running
+        CNIPlugin->>CNIPlugin: Initialize & write CNI config file
+    end
+
+    note over Kubelet: Kubelet eventually sees NetworkReady=true
+    Kubelet->>+APIServer: Update Node Status: Ready (remove taint)

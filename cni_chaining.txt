@@ -1,0 +1,18 @@
+sequenceDiagram
+    title CNI Chaining
+ 
+    participant ContainerRuntime as Container Runtime (CRI)
+    participant Plugin1 as Network
+    participant Plugin2 as Portmap
+    participant Plugin3 as Network Policies
+    participant Plugin4 as Service Mesh
+
+
+    ContainerRuntime->>+Plugin1: CNI ADD
+    Plugin1-->>-ContainerRuntime: Result (IP, etc.)
+    ContainerRuntime->>+Plugin2: CNI ADD (with prevResult from Plugin 1)
+    Plugin2-->>-ContainerRuntime: Result (Port Mappings, etc.)
+    ContainerRuntime->>+Plugin3: CNI ADD (with prevResult from Plugin 2)
+    Plugin3-->>-ContainerRuntime: Result
+    ContainerRuntime->>+Plugin4: CNI ADD (with prevResult from Plugin 3)
+    Plugin4-->>-ContainerRuntime: Result
